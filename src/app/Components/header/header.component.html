@@ -1,0 +1,33 @@
+<ul
+  ngbNav
+  #nav="ngbNav"
+  class="nav-tabs bg-success d-flex align-items-center justify-content-between flex-wrap">
+  <li
+    [ngbNavItem]="1"
+    class="p-2">
+    <h2 class="ms-2 text-light">Appointment Manager</h2>
+  </li>
+  <li>
+    @if (!isLoggedIn()) {
+      <button class="me-3 unstyled-button text-light">
+        <h5>
+          Login
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </h5>
+      </button>
+    } @else {
+      <button
+        class="me-3 unstyled-button text-light"
+        (click)="logout()">
+        <h5>
+          Logout
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </h5>
+      </button>
+    }
+  </li>
+</ul>
+
+<div
+  [ngbNavOutlet]="nav"
+  class="mt-2"></div>
