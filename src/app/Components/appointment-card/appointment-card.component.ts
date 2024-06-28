@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { derivedAsync } from 'ngxtension/derived-async';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { Appointment } from '../../Models/AppointmentModels';
 import { AppointmentService } from '../../Services/appointment.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
@@ -66,7 +66,6 @@ export class AppointmentCardComponent {
   });
 
   deleteAppointment(appointment: Appointment) {
-    console.log(appointment);
     const modalRef = this.#modalService.open(ConfirmModalComponent);
     modalRef.componentInstance.title.set('Confirm deletion?');
     modalRef.componentInstance.content.set('Are you sure you want to remove this appointment?');
@@ -91,7 +90,6 @@ export class AppointmentCardComponent {
 
   #getAppointments(id: number) {
     return this.#appointmentService.getAppointments(id)?.pipe(
-      tap(console.log),
       map(appointment =>
         appointment.map((appointment: Appointment) => ({
           ...appointment,
