@@ -18,4 +18,8 @@ export class AvailabilityService {
   getAvailability(id: number) {
     return this.http.get<Availability[]>(`http://localhost:8087/api/v1/availability/${id}`);
   }
+
+  deleteAvailability(id: number) {
+    return this.http.delete(`http://localhost:8087/api/v1/availability/${id}`);
+  }
 }

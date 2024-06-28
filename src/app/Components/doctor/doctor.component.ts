@@ -10,11 +10,13 @@ import { AvailabilityCardComponent } from './availability-card/availability-card
   selector: 'app-doctor-page',
   standalone: true,
   template: `
-    <div class="d-flex flex-column flex-md-row w-75 ms-auto me-auto justify-content-around pt-5">
+    <div class="d-flex flex-column flex-lg-row w-75 ms-auto me-auto justify-content-around  pt-5">
       <app-availability-card
         [id]="id()"
-        class="mb-4 mb-md-0 me-md-4" />
-      <app-appointment-card />
+        class="mb-4 mb-lg-0 me-lg-4" />
+      <app-appointment-card
+        [title]="cardTitle"
+        [userId]="id()" />
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +26,7 @@ export class DoctorComponent implements OnInit {
   readonly #userService = inject(UserService);
   readonly #destroyRef = inject(DestroyRef);
   id = signal(0);
+  cardTitle = 'Taken times';
 
   ngOnInit(): void {
     this.#userService

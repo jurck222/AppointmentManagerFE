@@ -10,4 +10,6 @@ import { LoginComponent } from './Components/login/login.component';
   styleUrl: './app.component.css',
   imports: [RouterOutlet, HeaderComponent, LoginComponent],
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'AppointmentManagerFE';
+}
