@@ -23,9 +23,10 @@ import { DoctorsListComponent } from './doctors-list/doctors-list.component';
 })
 export class DoctorsCardComponent {
   service = input.required<string>();
+  userId = input.required<number>();
+
   showAvailability = signal(false);
   selectedDoctorId = signal(0);
-  userId = input.required<number>();
 
   constructor() {
     effect(

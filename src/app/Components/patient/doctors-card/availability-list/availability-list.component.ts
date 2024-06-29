@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, input, model } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { derivedAsync } from 'ngxtension/derived-async';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { Appointment } from '../../../../Models/AppointmentModels';
 import { Availability } from '../../../../Models/AvailabilityModels';
 import { AppointmentService } from '../../../../Services/appointment.service';
@@ -89,9 +89,6 @@ export class AvailabilityListComponent {
       availabilityId: availability.id,
     };
 
-    console.log(availability.startTime.toISOString());
-    console.log(newAppointment);
-
     const modalRef = this.#modalService.open(ConfirmModalComponent);
 
     modalRef.componentInstance.title.set('Book appointment?');
@@ -117,7 +114,6 @@ export class AvailabilityListComponent {
 
   #getAvailability$(id: number) {
     return this.#availabilityService.getAvailability(id).pipe(
-      tap(console.log),
       map(availability =>
         availability.map((availability: Availability) => ({
           ...availability,

@@ -8,10 +8,6 @@ import { DoctorInfo } from '../Models/DoctorModels';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getRole() {
-    return this.http.get<string>('http://localhost:8087/api/v1/user/role');
-  }
-
   getId() {
     return this.http.get<number>('http://localhost:8087/api/v1/user/userId');
   }

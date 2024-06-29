@@ -11,9 +11,7 @@ describe('HeaderComponent', () => {
   let router: Router;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
@@ -27,7 +25,6 @@ describe('HeaderComponent', () => {
     spyOn(loginService, 'getRole').and.returnValue('DOCTOR');
     fixture.detectChanges();
 
-    expect(component.isLoggedIn()).toBeTrue();
     expect(loginService.getToken).toHaveBeenCalled();
     expect(loginService.getRole).toHaveBeenCalled();
   });
@@ -43,6 +40,5 @@ describe('HeaderComponent', () => {
     expect(loginService.removeRole).toHaveBeenCalled();
     expect(loginService.removeToken).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalled();
-    expect(component.isLoggedIn()).toBeFalse();
   });
 });

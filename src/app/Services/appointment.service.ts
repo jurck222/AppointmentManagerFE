@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { createNotifier } from 'ngxtension/create-notifier';
+import { of } from 'rxjs';
 import { Appointment } from '../Models/AppointmentModels';
 import { LoginService } from './login.service';
 
@@ -8,22 +9,24 @@ import { LoginService } from './login.service';
   providedIn: 'root',
 })
 export class AppointmentService {
-  readonly #loginService = inject(LoginService);
   notifyForRefetch = createNotifier();
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private loginService: LoginService
+  ) {}
 
   createAppointment(appointment: Appointment) {
     return this.http.post<string>('http://localhost:8087/api/v1/appointment/', appointment);
   }
 
   getAppointments(id: number) {
-    if (this.#loginService.getRole() === 'PATIENT') {
+    if (this.loginService.getRole() === 'PATIENT') {
       return this.http.get<Appointment[]>(`http://localhost:8087/api/v1/appointment/user/${id}`);
     }
-    if (this.#loginService.getRole() === 'DOCTOR') {
+    if (this.loginService.getRole() === 'DOCTOR') {
       return this.http.get<Appointment[]>(`http://localhost:8087/api/v1/appointment/doctor/${id}`);
     }
-    return null;
+    return of([]);
   }
 
   deleteAppointment(id: number) {

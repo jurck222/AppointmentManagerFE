@@ -3,17 +3,12 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgxControlError, StateMatcher } from 'ngxtension/control-error';
-import { catchError, EMPTY, map, startWith } from 'rxjs';
+import { NgxControlError } from 'ngxtension/control-error';
+import { catchError, EMPTY } from 'rxjs';
 import { LoginParams } from '../../Models/AuthModels';
 import { AuthenticateService } from '../../Services/authenticate.service';
 import { LoginService } from '../../Services/login.service';
 
-export const customErrorStateMatcher: StateMatcher = control =>
-  control.statusChanges.pipe(
-    startWith(control.status),
-    map(status => status === 'INVALID')
-  );
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,13 +23,13 @@ export const customErrorStateMatcher: StateMatcher = control =>
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 
             <label
-              for="inputlogin"
+              for="inputUsername"
               class="sr-only">
               Login
             </label>
             <input
               type="text"
-              id="inputLogin"
+              id="inputUsername"
               class="form-control"
               name="login"
               placeholder="Login"
@@ -56,7 +51,15 @@ export const customErrorStateMatcher: StateMatcher = control =>
               formControlName="password"
               required />
             @if (showError()) {
-              <div class="mb-2"><span class="text-danger">Username or password is invalid.</span></div>
+              <div
+                id="errorMessage"
+                class="mb-2">
+                <span
+                  id="errorSpan"
+                  class="text-danger">
+                  Username or password is invalid.
+                </span>
+              </div>
             }
             <button
               class="btn btn-lg btn-primary btn-block"
@@ -93,9 +96,6 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   showError = signal(false);
 
-  get passwordCtrl() {
-    return this.loginForm.controls['password'];
-  }
   ngOnInit(): void {
     this.#initForm();
   }

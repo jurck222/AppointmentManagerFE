@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { createNotifier } from 'ngxtension/create-notifier';
 import { derivedAsync } from 'ngxtension/derived-async';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { Availability } from '../../../Models/AvailabilityModels';
 import { AvailabilityService } from '../../../Services/availability.service';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
@@ -116,8 +116,10 @@ export class AvailabilityCardComponent {
 
   deleteAvailability(id: number) {
     const modalRef = this.#modalService.open(ConfirmModalComponent);
+
     modalRef.componentInstance.title.set('Confirm deletion?');
     modalRef.componentInstance.content.set('Are you sure you want to remove this availability window?');
+
     modalRef.result.then(
       closed => {
         if (closed) {
@@ -139,7 +141,6 @@ export class AvailabilityCardComponent {
 
   #fetchAvailability(id: number) {
     return this.#availabilityService.getAvailability(id).pipe(
-      tap(console.log),
       map(availability =>
         availability.map((availability: Availability) => ({
           ...availability,

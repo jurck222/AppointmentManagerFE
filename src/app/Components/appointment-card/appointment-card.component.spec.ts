@@ -36,6 +36,15 @@ describe('AppointmentCardComponent', () => {
     endTime: new Date(),
   };
 
+  const testAppointmentNoId: Appointment = {
+    doctorId: 1,
+    patientId: 1,
+    availabilityId: 2,
+    service: 'General checkup',
+    startTime: new Date(),
+    endTime: new Date(),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
@@ -47,18 +56,28 @@ describe('AppointmentCardComponent', () => {
 
     appointmentService = fixture.debugElement.injector.get(AppointmentService);
     modalService = fixture.debugElement.injector.get(NgbModal);
-
-    fixture.componentRef.setInput('title', 'Appointments');
-    fixture.componentRef.setInput('userId', 1);
   });
 
   it('should fetch appointments', waitForAsync(() => {
     spyOn(appointmentService, 'getAppointments').and.returnValue(of([testAppointment, testAppointment2]));
 
+    fixture.componentRef.setInput('title', 'Appointments');
+    fixture.componentRef.setInput('userId', 1);
+
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(appointmentService.getAppointments).toHaveBeenCalledOnceWith(1);
       expect(component.appointments()).toEqual([testAppointment, testAppointment2]);
+    });
+  }));
+
+  it('should not fetch appointments when id is null', waitForAsync(() => {
+    fixture.componentRef.setInput('title', 'Appointments');
+    fixture.componentRef.setInput('userId', null);
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.appointments()).toEqual([]);
     });
   }));
 
@@ -70,11 +89,34 @@ describe('AppointmentCardComponent', () => {
     spyOn(modalService, 'open').and.returnValue(mockModal as NgbModalRef);
     spyOn(appointmentService, 'deleteAppointment').and.returnValue(of(void 0));
 
+    fixture.componentRef.setInput('title', 'Appointments');
+    fixture.componentRef.setInput('userId', 1);
+
     fixture.detectChanges();
     component.deleteAppointment(testAppointment);
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(appointmentService.deleteAppointment).toHaveBeenCalledOnceWith(1);
+      expect(modalService.open).toHaveBeenCalled();
+    });
+  }));
+
+  it('should open modal and delete appointment if id is not present', waitForAsync(() => {
+    const mockModal: Partial<NgbModalRef> = {
+      result: new Promise(resolve => resolve(true)),
+      componentInstance: confirmModal,
+    };
+    spyOn(modalService, 'open').and.returnValue(mockModal as NgbModalRef);
+    spyOn(appointmentService, 'deleteAppointment').and.returnValue(of(void 0));
+
+    fixture.componentRef.setInput('title', 'Appointments');
+    fixture.componentRef.setInput('userId', 1);
+
+    fixture.detectChanges();
+    component.deleteAppointment(testAppointmentNoId);
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(appointmentService.deleteAppointment).toHaveBeenCalledOnceWith(0);
       expect(modalService.open).toHaveBeenCalled();
     });
   }));
