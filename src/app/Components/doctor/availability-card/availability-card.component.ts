@@ -29,7 +29,7 @@ import { AddAvailabilityComponent } from '../add-availability/add-availability.c
             <i class="fa-solid fa-angle-down"></i>
           }
         </button>
-        <h5 class="mb-0">Prosti termini</h5>
+        <h5 class="mb-0">Availability</h5>
         <button
           class="unstyled-button"
           (click)="openAddModal()"

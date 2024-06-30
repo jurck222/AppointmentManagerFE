@@ -21,7 +21,7 @@ import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component'
           @for (appointment of appointments(); track appointment.id) {
             <li class="list-group-item d-flex justify-content-between">
               <div>
-                {{ appointment.startTime.getDate() }}.{{ appointment.startTime.getMonth() }}.{{
+                {{ appointment.startTime.getDate() }}.{{ appointment.startTime.getMonth() + 1 }}.{{
                   appointment.startTime.getFullYear()
                 }}
               </div>
