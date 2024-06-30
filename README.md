@@ -16,4 +16,4 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Description
 
-The app allows doctors to set their availability times so the patients can schedule an appointment with them for a service they provide.s
+The app allows doctors to set their availability times so the patients can schedule an appointment with them for a service they provide.
