@@ -5,6 +5,7 @@ import { createNotifier } from 'ngxtension/create-notifier';
 import { derivedAsync } from 'ngxtension/derived-async';
 import { map } from 'rxjs';
 import { Availability } from '../../../Models/AvailabilityModels';
+import { AppointmentService } from '../../../Services/appointment.service';
 import { AvailabilityService } from '../../../Services/availability.service';
 import { ConfirmModalComponent } from '../../confirm-modal/confirm-modal.component';
 import { AddAvailabilityComponent } from '../add-availability/add-availability.component';
@@ -80,12 +81,14 @@ export class AvailabilityCardComponent {
   readonly #modalService = inject(NgbModal);
   readonly #destroyRef = inject(DestroyRef);
   readonly #availabilityService = inject(AvailabilityService);
+  readonly #appointmentService = inject(AppointmentService);
 
   id = input.required<number>();
   isCollapsed = signal(window.innerWidth < 700);
   refetchNotifier = createNotifier();
 
   availabilities = derivedAsync(() => {
+    this.#appointmentService.notifyForRefetch.listen();
     this.refetchNotifier.listen();
     return this.id() ? this.#fetchAvailability(this.id()) : [];
   });
